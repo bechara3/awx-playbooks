@@ -5,7 +5,7 @@
 
   tasks:
     - name: Set Google DNS in resolved.conf
-      ansible.builtin.ini_file:   # <-- UPDATED HERE
+      ansible.builtin.ini_file:
         path: /etc/systemd/resolved.conf
         section: Resolve
         option: DNS
@@ -15,6 +15,6 @@
 
   handlers:
     - name: Restart systemd-resolved
-      ansible.builtin.service:  # <-- AND UPDATED HERE
+      ansible.builtin.service:
         name: systemd-resolved
         state: restarted
