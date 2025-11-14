@@ -1,11 +1,20 @@
 ---
-- name: Test DNS Configuration
+- name: Configure DNS with systemd-resolved
   hosts: all
-  become: yes  # This means "use sudo"
+  become: yes
 
   tasks:
-    - name: Add Google DNS to resolv.conf
-      lineinfile:
-        path: /etc/resolv.conf
-        line: 'nameserver 8.8.8.8'
-        state: present
+    - name: Set Google DNS in resolved.conf
+      ini_file:
+        path: /etc/systemd/resolved.conf
+        section: Resolve       # The section in the file, like [Resolve]
+        option: DNS            # The key, like DNS=
+        value: '8.8.8.8'       # The value
+        mode: '0644'
+      notify: Restart systemd-resolved  # This tells Ansible to run the handler below
+
+  handlers:
+    - name: Restart systemd-resolved
+      service:
+        name: systemd-resolved
+        state: restarted
