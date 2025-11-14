@@ -5,16 +5,16 @@
 
   tasks:
     - name: Set Google DNS in resolved.conf
-      ini_file:
+      ansible.builtin.ini_file:   # <-- UPDATED HERE
         path: /etc/systemd/resolved.conf
-        section: Resolve       # The section in the file, like [Resolve]
-        option: DNS            # The key, like DNS=
-        value: '8.8.8.8'       # The value
+        section: Resolve
+        option: DNS
+        value: '8.8.8.8'
         mode: '0644'
-      notify: Restart systemd-resolved  # This tells Ansible to run the handler below
+      notify: Restart systemd-resolved
 
   handlers:
     - name: Restart systemd-resolved
-      service:
+      ansible.builtin.service:  # <-- AND UPDATED HERE
         name: systemd-resolved
         state: restarted
