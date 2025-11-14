@@ -1,0 +1,11 @@
+---
+- name: Test DNS Configuration
+  hosts: all
+  become: yes  # This means "use sudo"
+
+  tasks:
+    - name: Add Google DNS to resolv.conf
+      lineinfile:
+        path: /etc/resolv.conf
+        line: 'nameserver 8.8.8.8'
+        state: present
